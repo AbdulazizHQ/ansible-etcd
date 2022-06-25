@@ -1,2 +1,15 @@
 ---
 # handlers file for etcd-docker
+- name: Restart etcd docker container
+  community.docker.docker_container:
+    name: etcd
+    state: started
+    image: gcr.io/etcd-development/etcd:v3.5.4
+    network_mode: host
+    volumes:
+      - /var/etcd/etcd.conf:/var/etcd/etcd.conf
+      - /var/etcd/data:/var/etcd/data
+    restart: yes
+    restart_policy: unless-stopped
+    env:
+      ETCD_CONFIG_FILE: /var/etcd/etcd.conf

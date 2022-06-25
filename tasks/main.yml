@@ -1,2 +1,31 @@
 ---
 # tasks file for etcd-docker
+- name: Ensure etcd directory is present
+  ansible.builtin.file:
+    path: /var/etcd
+    state: directory
+
+- name: Ensure data directory is present
+  ansible.builtin.file:
+    path: /var/etcd/data
+    state: directory
+    mode: 0700
+
+- name: Ensure wal director is present
+  ansible.builtin.file:
+    path: /var/etcd/wal
+    state: directory
+
+- name: Ensure etcd configuration is present
+  ansible.builtin.template:
+    src: ./templates/etcd.conf.j2
+    dest: /var/etcd/etcd.conf
+  notify: Restart etcd docker container
+
+- name: Ensure etcd ports are open
+  ansible.posix.firewalld:
+    port: 2379-2380/tcp
+    state: enabled
+    permanent: yes
+    immediate: yes
+    zone: public

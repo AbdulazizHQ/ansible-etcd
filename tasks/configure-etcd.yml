@@ -1,0 +1,10 @@
+---
+- name: Ensure etcd directory is present
+  ansible.builtin.file:
+    path: /var/etcd
+    state: directory
+
+- name: Ensure etcd configuration is present
+  ansible.builtin.template:
+    src: ./templates/etcd.conf.j2
+    dest: /var/etcd/etcd.conf

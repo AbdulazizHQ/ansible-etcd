@@ -1,0 +1,3 @@
+---
+private_nic_name: eth0
+etcd_initial_cluster_state: new
